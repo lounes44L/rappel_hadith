@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tous les Hadiths - Les 42 Hadiths de l'Imam An-Nawawi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+    <style>
+        .hadith-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .hadith-header {
+            background: #2C3E50;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-bottom: 2px;
+            transition: background-color 0.3s;
+        }
+        
+        .hadith-header:hover {
+            background: #34495e;
+        }
+        
+        .hadith-card {
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .active .hadith-header {
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .active .hadith-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Les 42 Hadiths de l'Imam An-Nawawi</h1>
+        <p>Collection complète</p>
+    </div>
+
+    <div class="container">
+        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        
+        <div class="hadiths-section">
+            {% for hadith in hadiths %}
+                <div class="hadith-card">
+                    <div class="hadith-header" onclick="toggleHadith(this)">
+                        Hadith n°{{ hadith.number }}
+                    </div>
+                    <div class="hadith-content">
+                        <div class="hadith-text">{{ hadith.text }}</div>
+                        {% if hadith.arabic %}
+                            <div class="arabic-text">{{ hadith.arabic }}</div>
+                        {% endif %}
+                        {% if hadith.source %}
+                            <div class="hadith-source">{{ hadith.source }}</div>
+                        {% endif %}
+                        {% if hadith.explication %}
+                            <div class="hadith-explication">{{ hadith.explication }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="back-section">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Retour à l'accueil</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleHadith(element) {
+            // Ferme tous les autres hadiths
+            const allHadiths = document.querySelectorAll('.hadith-card');
+            allHadiths.forEach(hadith => {
+                if (hadith !== element.parentElement) {
+                    hadith.classList.remove('active');
+                }
+            });
+            
+            // Bascule l'état du hadith cliqué
+            element.parentElement.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
